@@ -95,7 +95,3 @@ tasks:
       - go install github.com/attapon-th/cobra-cli@latest
       - go install github.com/itchyny/gojq/cmd/gojq@latest
       - go install github.com/swaggo/swag/cmd/swag@latest
-
-  tlp:
-    cmds:
-      -
