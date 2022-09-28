@@ -6,10 +6,10 @@
 go install github.com/go-task/task/v3/cmd/task@latest
 ```
 
-## Use get [Taskfile.yaml](https://raw.githubusercontent.com/attapon-th/my-taskfile/main/Taskfile.yaml) into root directory project
+## Use get [Taskfile.yaml](https://raw.githubusercontent.com/attapon-th/go-project-template/main/Taskfile.yaml) into root directory project
 
 ```shell
-curl https://raw.githubusercontent.com/attapon-th/my-taskfile/main/Taskfile.yaml > Taskfile.yaml \
+curl https://raw.githubusercontent.com/attapon-th/go-project-template/main/Taskfile.yaml > Taskfile.yaml \
 && task goinit \
 && cobra-cli init --viper \
 && echo "/vendor" >> .gitignore
@@ -35,7 +35,7 @@ curl https://raw.githubusercontent.com/attapon-th/my-taskfile/main/Taskfile.yaml
 
 # [Fiber v2 API](https://docs.gofiber.io/)
 
-## [Fiber v2 Layouts](https://github.com/attapon-th/my-taskfile/tree/main/tlp/fiberv2)
+## [Fiber v2 Layouts](https://github.com/attapon-th/go-project-template/tree/main/tlp/fiberv2)
 
 > cmd   -- create by `cobra-cli`
 > 
@@ -64,7 +64,7 @@ curl https://raw.githubusercontent.com/attapon-th/my-taskfile/main/Taskfile.yaml
 ```shell
 # cd to project
 ## create go project
-curl https://raw.githubusercontent.com/attapon-th/my-taskfile/main/Taskfile.yaml > Taskfile.yaml \
+curl https://raw.githubusercontent.com/attapon-th/go-project-template/main/Taskfile.yaml > Taskfile.yaml \
 && task goinit \
 && cobra-cli init --viper \
 && echo "/vendor" >> .gitignore
@@ -75,15 +75,15 @@ mkdir -p internal/controller \
 && mkdir -p internal/middleware \
 && mkdir -p internal/model \
 && mkdir -p pkg \
-&& curl https://raw.githubusercontent.com/attapon-th/my-taskfile/main/tlp/fiberv2/.config.yaml > .config.yaml \
-&& curl https://raw.githubusercontent.com/attapon-th/my-taskfile/main/tlp/fiberv2/internal/fiber.go > internal/fiber.go \
-&& curl https://raw.githubusercontent.com/attapon-th/my-taskfile/main/tlp/fiberv2/internal/controller/pingController.go > internal/controller/pingController.go \
-&& curl https://raw.githubusercontent.com/attapon-th/my-taskfile/main/tlp/fiberv2/internal/middleware/middleware.go > internal/middleware/middleware.go
+&& curl https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/.config.yaml > .config.yaml \
+&& curl https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/internal/fiber.go > internal/fiber.go \
+&& curl https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/internal/controller/pingController.go > internal/controller/pingController.go \
+&& curl https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/internal/middleware/middleware.go > internal/middleware/middleware.go
 && cobra-cli add serv
 
 ## Get swagger if your use https://github.com/swaggo/swag
-curl https://raw.githubusercontent.com/attapon-th/my-taskfile/main/tlp/fiberv2/_main-dev.go > _main-dev.go \
-&& curl https://raw.githubusercontent.com/attapon-th/my-taskfile/main/tlp/fiberv2/_main-prd.go > _main-prd.go
+curl https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/_main-dev.go > _main-dev.go \
+&& curl https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/_main-prd.go > _main-prd.go
 
 
 ```
@@ -100,13 +100,13 @@ curl https://raw.githubusercontent.com/attapon-th/my-taskfile/main/tlp/fiberv2/_
 
 > Pathfile: `./.config.yaml`
 > 
-> Example: [.config.yaml](https://raw.githubusercontent.com/attapon-th/my-taskfile/main/tlp/fiberv2/.config.yaml) 
+> Example: [.config.yaml](https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/.config.yaml) 
 
 ## Setup Fiber
 
 > Pathfile: `./internal/fiber.go`
 > 
-> Example: [fiber.go](https://raw.githubusercontent.com/attapon-th/my-taskfile/main/tlp/fiberv2/internal/fiber.go)
+> Example: [fiber.go](https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/internal/fiber.go)
 
 ---
 
@@ -114,10 +114,10 @@ curl https://raw.githubusercontent.com/attapon-th/my-taskfile/main/tlp/fiberv2/_
 
 > Pathfile: `./internal/controller/pingController.go`
 > 
-> Example: [pingController.go](https://raw.githubusercontent.com/attapon-th/my-taskfile/main/tlp/fiberv2/internal/controller/pingController.go)
+> Example: [pingController.go](https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/internal/controller/pingController.go)
 
 ## Middleware `./internal/middleware/middleware.go`
 
 > Pathfile: `./internal/middleware/middleware.go`
 > 
-> Example: [middleware.go](https://raw.githubusercontent.com/attapon-th/my-taskfile/main/tlp/fiberv2/internal/middleware/middleware.go)
+> Example: [middleware.go](https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/internal/middleware/middleware.go)
