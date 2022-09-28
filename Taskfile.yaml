@@ -45,18 +45,6 @@ tasks:
       - go mod vendor
       - go mod verify
 
-  # -- Swagger 2.0 -- #
-  swag:
-    cmds:
-      - echo "reference https://github.com/swaggo/swag"
-      - swag fmt
-      - swag init --ot 'json' --output ./storage/swagger -g _main-dev.go
-
-  swag-prd:
-    cmds:
-      - swag fmt
-      - swag init --ot 'json' --output ./storage/swagger -g _main-prd.go
-
   build:
     cmds:
       - |
@@ -96,6 +84,14 @@ tasks:
       - go install github.com/itchyny/gojq/cmd/gojq@latest
       - go install github.com/swaggo/swag/cmd/swag@latest
 
-  tlp:
-    cmds:
-      - curl -Ssl https://raw.githubusercontent.com/attapon-th/my-taskfile/main/Taskfile.yaml
+  # -- Swagger 2.0 -- #
+  # swag:
+  #   cmds:
+  #     - echo "reference https://github.com/swaggo/swag"
+  #     - swag fmt
+  #     - swag init --ot 'json' --output ./storage/swagger -g _main-dev.go
+
+  # swag-prd:
+  #   cmds:
+  #     - swag fmt
+  #     - swag init --ot 'json' --output ./storage/swagger -g _main-prd.go

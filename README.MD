@@ -81,6 +81,10 @@ mkdir -p internal/controller \
 && curl https://raw.githubusercontent.com/attapon-th/my-taskfile/main/tlp/fiberv2/internal/middleware/middleware.go > internal/middleware/middleware.go
 && cobra-cli add serv
 
+## Get swagger if your use https://github.com/swaggo/swag
+curl https://raw.githubusercontent.com/attapon-th/my-taskfile/main/tlp/fiberv2/_main-dev.go > _main-dev.go \
+&& curl https://raw.githubusercontent.com/attapon-th/my-taskfile/main/tlp/fiberv2/_main-prd.go > _main-prd.go
+
 
 ```
 
