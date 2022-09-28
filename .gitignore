@@ -1,0 +1,3 @@
+curl https://raw.githubusercontent.com/attapon-th/my-taskfile/main/Taskfile.yaml > Taskfile.yaml
+
+task goinit

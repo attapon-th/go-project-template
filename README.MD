@@ -1,8 +1,21 @@
-# Fiber v2
+# Taskfile
 
-- [Github Fiber v2](https://github.com/gofiber/fiber)
+## Install taskfile: https://taskfile.dev/installation/
 
-- [Docs Fiber v2](https://docs.gofiber.io/)
+```shell
+go install github.com/go-task/task/v3/cmd/task@latest
+```
+
+## Use get [Taskfile.yaml](https://raw.githubusercontent.com/attapon-th/my-taskfile/main/Taskfile.yaml) into root directory project
+
+```shell
+curl https://raw.githubusercontent.com/attapon-th/my-taskfile/main/Taskfile.yaml > Taskfile.yaml \
+&& task goinit \
+&& cobra-cli init --viper \
+&& echo "/vendor" >> .gitignore
+```
+
+
 
 ## List Packages
 
@@ -18,211 +31,89 @@
 | [sqlx](https://jmoiron.github.io/sqlx/)                      | `"github.com/jmoiron/sqlx"`              | `sql` package same `database/sql`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | [viper](https://github.com/spf13/viper)                      | `"github.com/spf13/viper"`               | Configuration                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 
-## Directory Layouts
+---
 
-- cmd
+# [Fiber v2 API](https://docs.gofiber.io/)
 
-- internal
-  
-  - controller
-  - middleware
-  
-  - model
+## [Fiber v2 Layouts](https://github.com/attapon-th/my-taskfile/tree/main/tlp/fiberv2)
 
-- pkg -- global package
+> cmd   -- create by `cobra-cli`
+> 
+> > root.go 
+> > 
+> > serv.go
+> 
+> internal
+> 
+> > controller
+> > 
+> > middleware
+> > 
+> > model
+> 
+> pkg  -- global package
+> 
+> .confg.yaml
+> 
+> main.go -- create by `cobra-cli`
 
-- .config.yaml -- _default config_
 
-- main.go  -- _auto create with_ `cobra-cli init --viper --author "Firstname Lastname"`
 
-## Initial Project
+## Initialize Project Fiber v2
 
 ```shell
-git init
-git remote add origin https://github.com/_USER_/_REPO_.git # please change _USER_, _REPO_
-go mod init github.com/_USER_/_REPO_ # please change _USER_, _REPO_
-```
+# cd to project
+## create go project
+curl https://raw.githubusercontent.com/attapon-th/my-taskfile/main/Taskfile.yaml > Taskfile.yaml \
+&& task goinit \
+&& cobra-cli init --viper \
+&& echo "/vendor" >> .gitignore
+## end create go project 
 
-### Use `cobra-cli` and load config with `viper`
-
-#### [cobra-cli](https://github.com/spf13/cobra-cli/blob/main/README.md) - Cobra Generator Documentation
-
-```shell
-go install github.com/spf13/cobra-cli@latest # install cobra-cli
-
-## -Create Direcotory- ##
+## create fiber
 mkdir -p internal/controller \
 && mkdir -p internal/middleware \
 && mkdir -p internal/model \
-&& mkdir -p pkg
+&& mkdir -p pkg \
+&& curl https://raw.githubusercontent.com/attapon-th/my-taskfile/main/tlp/fiberv2/.config.yaml > .config.yaml \
+&& curl https://raw.githubusercontent.com/attapon-th/my-taskfile/main/tlp/fiberv2/internal/fiber.go > internal/fiber.go \
+&& curl https://raw.githubusercontent.com/attapon-th/my-taskfile/main/tlp/fiberv2/internal/controller/pingController.go > internal/controller/pingController.go \
+&& curl https://raw.githubusercontent.com/attapon-th/my-taskfile/main/tlp/fiberv2/internal/middleware/middleware.go > internal/middleware/middleware.go
+&& cobra-cli add serv
 
-## -add command cli- ##
-cobra-cli init --viper --author "Firstname Lastname"
 
-cobra-cli add serv
-
-go mod tidy
-## - test -
-go run main.go --help
 ```
+
+### Edit file
+
+- `cmd/serv.go` -- for run server filber call in `internal.Serv()`
+
+- internal/fiber.go -- edit call any `controller.Endpoint{ANY}`  for setup route
+
+### 
 
 ## Configs `./.config.yaml`
 
-```yaml
-version: 1.0.0
-app:
-  dev: true
-  listen: localhost # production set: 0.0.0.0
-  prefix: /api/v1
-  port: 8888
-  cpu: 2 # if fiber.Config.Prefork=True
-  logs:
-    log: console
-    access: storage/logs/access.log
-```
+> Pathfile: `./.config.yaml`
+> 
+> Example: [.config.yaml](https://raw.githubusercontent.com/attapon-th/my-taskfile/main/tlp/fiberv2/.config.yaml) 
 
----
+## Setup Fiber
 
-## Fiber App server `./internal/server.go`
-
-```go
-// Package internal usecase for project
-package internal
-import (
-    jsoniter "github.com/json-iterator/go"
-    "github.com/gofiber/fiber/v2"
-)
-
-var (
-    Version     string = "1.0.0"
-    Build       string = ""
-    Timestamp   string = ""
-)
-
-func init(){
-    app := NewFiber()
-    controller.EndpointPing(app, viper.GetString("app.prefix"))
-}
-
-func NewFiber() *fiber.App{
-    app := fiber.New  
-    config := fiber.Config{
-        AppName:              "fiber-api",
-        Prefork:               false,
-        StrictRouting:         true,
-        CaseSensitive:         true,
-        Immutable:             false,
-        BodyLimit:             4 * 1024 * 1024, // 4mb body size
-        Concurrency:           256 * 1024, 
-        JSONEncoder:           jsoniter.Marshal,
-        JSONDecoder:           jsoniter.Unmarshal,
-        ErrorHandler:          ErrorHandlerResponseJSON,
-    }
-    if nc := viper.GetInt("app.cpu"); nc == 1 || nc < 0 {
-        config.Prefork = false
-    } else if nc == 0 {
-        config.Prefork = true
-    } else if nc > 1 {
-        config.Prefork = true
-        runtime.GOMAXPROCS(nc)
-    }
-    app := fiber.New(config)
-    return app
-}
-
-
-func ErrorHandlerResponseJSON(ctx *fiber.Ctx, err error) error {
-    code := fiber.StatusInternalServerError
-    msgError := "Error!!!"
-    if e, ok := err.(*fiber.Error); ok {
-        code = e.Code
-    }
-    if err != nil {
-        msgError = err.Error()mi
-    }
-    resError := fiber.Map{
-        "msg": msgError,
-        "ok":  false,
-    }
-    return ctx.Status(code).JSON(resError)
-}
-```
+> Pathfile: `./internal/fiber.go`
+> 
+> Example: [fiber.go](https://raw.githubusercontent.com/attapon-th/my-taskfile/main/tlp/fiberv2/internal/fiber.go)
 
 ---
 
 ## Controller
 
-### Ping `./internal/controller/pingController.go`
-
-```go
-package controller
-
-import (
-    "github.com/gofiber/fiber/v2"
-)
-func EndpointPing(rt fiber.Router, prefixUrl string){
-    r := rt.Group(prefixUrl, middleware.CORS(), middleware.LogAccess() )
-
-    r.Get("/ping", PingHandler)
-}
-
-func PingHandler(c *fiber.Ctx) error{
-    return fiber.Mab{ok: true, msg: "ping succcess"}
-}
-```
-
----
+> Pathfile: `./internal/controller/pingController.go`
+> 
+> Example: [pingController.go](https://raw.githubusercontent.com/attapon-th/my-taskfile/main/tlp/fiberv2/internal/controller/pingController.go)
 
 ## Middleware `./internal/middleware/middleware.go`
 
-```go
-// Package middleware setup middleware fiber 
-package middleware
-// import(
-    // "github.com/gofiber/fiber/v2/middleware/compress"
-    // "github.com/gofiber/fiber/v2/middleware/cors"
-    // "github.com/attapon-th/go-pkgs/zlog"
-    // flog "github.com/gofiber/fiber/v2/middleware/logger"
-    // "github.com/gofiber/fiber/v2/middleware/cache"
-    // "github.com/gofiber/fiber/v2/middleware/basicauth"
-// )
-
-func CORS() fiber.Handler {
-    return cors.New(cors.Config{AllowOrigins: "*"})
-}
-
-func LogAccess() fiber.Handler {
-    logApiAcccess := zlog.NewLogRollingFile(viper.GetString("app.logs.access")
-    return flog.New(flog.Config{
-        Format: "[${host}][${latency}][${method}][${status}] ${url}",
-        Output: logApiAcccess, //
-    })
-}
-
-func Cache() fiber.Handler {
-    return cache.New(cache.Config{
-        Next: func(c *fiber.Ctx) bool {
-            return c.Query("cache") == "false"
-        },
-        Expiration:   30 * time.Minute,
-        CacheControl: true,
-    })
-}
-
-func Compress() fiber.Handler {
-    return compress.New(compress.Config{
-        Level: compress.LevelBestSpeed,
-    })
-}
-
-
-func BasicAuth() fiber.Handler {
-    return basicauth.New(basicauth.Config{
-        Users: map[string]string{
-            "user":  "pass",
-        },
-    })
-}
-```
-
----
+> Pathfile: `./internal/middleware/middleware.go`
+> 
+> Example: [middleware.go](https://raw.githubusercontent.com/attapon-th/my-taskfile/main/tlp/fiberv2/internal/middleware/middleware.go)

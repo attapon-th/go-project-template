@@ -18,7 +18,7 @@ var (
 	Timestamp string
 )
 
-func init() {
+func Serv() {
 	app := NewFiber()
 	// controller.EndpointPing(app, viper.GetString("app.prefix"))
 }
