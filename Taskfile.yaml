@@ -72,7 +72,7 @@ tasks:
       - task: tools
       - git init
       - |
-        echo "Example GO Module: github.com/attapon-th/fiber-api" \
+        echo "Example GO Module: github.com/your-name/project-name" \
         && read -p 'Input Go Module: ' gopack \
         && go mod init ${gopack}
       - cobra-cli init --viper
