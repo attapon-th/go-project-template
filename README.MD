@@ -18,8 +18,6 @@ cobra-cli init --viper
 echo "/vendor" >> .gitignore
 ```
 
-
-
 ## List Packages
 
 | Name(link)                                                   | Import                                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
