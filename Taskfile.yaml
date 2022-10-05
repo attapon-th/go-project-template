@@ -37,7 +37,9 @@ tasks:
   dev:
     cmds:
       - go run {{.LDFLAGS}} {{.GO_MAINFILE}} serv {{.CLI_ARGS}}
-
+  ver: # increment version
+    cmds:
+      - gosc upver Taskfile.yaml
   mod:
     cmds:
       # - go mod download
@@ -83,6 +85,7 @@ tasks:
       - go install github.com/attapon-th/cobra-cli@latest
       - go install github.com/itchyny/gojq/cmd/gojq@latest
       - go install github.com/swaggo/swag/cmd/swag@latest
+      - go install github.com/attapon-th/go-tools/gosc@latest
 
   # -- Swagger 2.0 -- #
   # swag:
