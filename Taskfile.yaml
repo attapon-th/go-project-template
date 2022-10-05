@@ -17,7 +17,7 @@ vars:
     -X '{{.GO_MODULE}}/internal.Timestamp={{.APP_TS}}' \
     " \
   GO_MODULE:
-    sh: go list -json | gojq .Module.Path  || echo ""
+    sh: go list -m  || echo ""
   DOCKER_REGISTRY_URL: registry.{{.GO_MODULE}}
 
 tasks:
