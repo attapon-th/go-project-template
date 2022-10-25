@@ -93,8 +93,6 @@ mkdir -p internal/controller \
 ```shell
 curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/_main-dev.go -o _main-dev.go \
 && curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/_main-prd.go -o _main-prd.go
-
-
 ```
 
 ### Edit file
