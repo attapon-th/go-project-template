@@ -62,16 +62,20 @@ echo "/vendor" >> .gitignore
 
 ## Initialize Project Fiber v2
 
+> cd to project
+> create go project
+>
+
 ```shell
-# cd to project
-## create go project
 curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/Taskfile.yaml -o Taskfile.yaml \
 && task goinit \
 && cobra-cli init --viper \
 && echo "/vendor" >> .gitignore
 ## end create go project 
+```
+> Create fiber
 
-## create fiber
+```shell
 mkdir -p internal/controller \
 && mkdir -p internal/middleware \
 && mkdir -p internal/model \
@@ -79,10 +83,14 @@ mkdir -p internal/controller \
 && curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/.config.yaml -o .config.yaml \
 && curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/internal/fiber.go -o internal/fiber.go \
 && curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/internal/controller/pingController.go -o internal/controller/pingController.go \
-&& curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/internal/middleware/middleware.go -o internal/middleware/middleware.go
-&& cobra-cli add serv
+&& curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/internal/middleware/middleware.go -o internal/middleware/middleware.go \
+&& cobra-cli add serv \
+&& task mod
+```
 
-## Get swagger if your use https://github.com/swaggo/swag
+> Optional: Get swagger if your use `https://github.com/swaggo/swag`
+
+```shell
 curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/_main-dev.go -o _main-dev.go \
 && curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/_main-prd.go -o _main-prd.go
 
