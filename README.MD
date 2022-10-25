@@ -79,11 +79,13 @@ curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/T
 mkdir -p internal/controller \
 && mkdir -p internal/middleware \
 && mkdir -p internal/model \
+&& mkdir -p internal/route \
 && mkdir -p pkg \
 && curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/.config.yaml -o .config.yaml \
 && curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/internal/fiber.go -o internal/fiber.go \
 && curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/internal/controller/pingController.go -o internal/controller/pingController.go \
 && curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/internal/middleware/middleware.go -o internal/middleware/middleware.go \
+&& curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/internal/middleware/middleware.go -o internal/route/route.go \
 && cobra-cli add serv \
 && task mod
 ```

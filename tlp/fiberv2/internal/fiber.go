@@ -5,6 +5,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	jsoniter "github.com/json-iterator/go"
+	"github.com/spf13/viper"
 )
 
 var (
@@ -18,13 +19,7 @@ var (
 	Timestamp string
 )
 
-func Serv() {
-	app := NewFiber()
-	// controller.EndpointPing(app, viper.GetString("app.prefix"))
-}
-
 func NewFiber() *fiber.App {
-	app := fiber.New
 	config := fiber.Config{
 		AppName:       "fiber-api",
 		Prefork:       false,
@@ -35,7 +30,7 @@ func NewFiber() *fiber.App {
 		Concurrency:   256 * 1024,
 		JSONEncoder:   jsoniter.Marshal,
 		JSONDecoder:   jsoniter.Unmarshal,
-		ErrorHandler:  ErrorHandlerResponseJSON,
+		ErrorHandler:  errorHandlerResponseJSON,
 	}
 	if nc := viper.GetInt("app.cpu"); nc == 1 || nc < 0 {
 		config.Prefork = false
@@ -49,7 +44,7 @@ func NewFiber() *fiber.App {
 	return app
 }
 
-func ErrorHandlerResponseJSON(ctx *fiber.Ctx, err error) error {
+func errorHandlerResponseJSON(ctx *fiber.Ctx, err error) error {
 	code := fiber.StatusInternalServerError
 	msgError := "Error!!!"
 	if e, ok := err.(*fiber.Error); ok {
