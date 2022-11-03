@@ -16,7 +16,6 @@ package route
 // }
 
 // func routePublic(rt fiber.Router) {
-// 	controller.EndpointPing(rt)
 // }
 
 // func routePrivate(rt fiber.Router) {

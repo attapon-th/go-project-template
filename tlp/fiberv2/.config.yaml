@@ -4,7 +4,7 @@ app:
   listen: localhost # production set: 0.0.0.0
   prefix: /api/v1
   port: 8888
-  cpu: 2 # if fiber.Config.Prefork=True
+  cpu: 2 # if cpu < 2: fiber.Config.Prefork=false
   logs:
     log: console
     access: storage/logs/access.log

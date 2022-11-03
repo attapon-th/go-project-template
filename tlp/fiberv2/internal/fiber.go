@@ -1,14 +1,21 @@
 package internal
 
 import (
+	"fmt"
 	"runtime"
 
+	"github.com/attapon-th/go-pkgs/zlog/log"
+
+	json "github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2"
-	jsoniter "github.com/json-iterator/go"
 	"github.com/spf13/viper"
 )
 
 var (
+
+	// AppFiber fiber app
+	AppFiber *fiber.App
+
 	// Version of builds
 	Version string
 
@@ -17,9 +24,16 @@ var (
 
 	// Timestamp of build
 	Timestamp string
+
+	// InitLoader func start loader manual add
+	InitLoader []func()
 )
 
-func NewFiber() *fiber.App {
+// NewFiber fiber server initailize
+func NewFiber() {
+	for _, fn := range InitLoader {
+		fn()
+	}
 	config := fiber.Config{
 		AppName:       "fiber-api",
 		Prefork:       false,
@@ -28,20 +42,27 @@ func NewFiber() *fiber.App {
 		Immutable:     false,
 		BodyLimit:     4 * 1024 * 1024, // 4mb body size
 		Concurrency:   256 * 1024,
-		JSONEncoder:   jsoniter.Marshal,
-		JSONDecoder:   jsoniter.Unmarshal,
+		JSONEncoder:   json.Marshal,
+		JSONDecoder:   json.Unmarshal,
 		ErrorHandler:  errorHandlerResponseJSON,
 	}
-	if nc := viper.GetInt("app.cpu"); nc == 1 || nc < 0 {
-		config.Prefork = false
-	} else if nc == 0 {
-		config.Prefork = true
-	} else if nc > 1 {
+
+	if nc := viper.GetInt("app.cpu"); nc > 1 {
 		config.Prefork = true
 		runtime.GOMAXPROCS(nc)
+	} else {
+		config.Prefork = false
 	}
-	app := fiber.New(config)
-	return app
+	AppFiber = fiber.New(config)
+}
+
+// Serv start server api
+// *** Uncomment // route.New(app) **
+func Serv() {
+	// route.New(app)
+	l := fmt.Sprintf("%s:%s", viper.GetString("app.listen"), viper.GetString("app.port"))
+	log.Info().Str("Listener", l).Msg("API server started")
+	AppFiber.Listen(l)
 }
 
 func errorHandlerResponseJSON(ctx *fiber.Ctx, err error) error {

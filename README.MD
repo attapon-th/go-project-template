@@ -96,11 +96,38 @@ curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/t
 && curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/_main-prd.go -o _main-prd.go
 ```
 
+
+
 ### Edit file
 
-- `cmd/serv.go` -- for run server filber call in `internal.Serv()`
+- `cmd/serv.go`
+    ```go
+    // servCmd represents the serv command
+    var servCmd = &cobra.Command{
+        Use:   "serv",
+        Short: "A brief description of your command",
+        Long: `A longer description that spans multiple lines and likely contains examples
+    and usage of using your command. For example:
 
-- internal/fiber.go -- edit call any `controller.Endpoint{ANY}`  for setup route
+    Cobra is a CLI library for Go that empowers applications.
+    This application is a tool to generate the needed files
+    to quickly create a Cobra application.`,
+        Run: func(cmd *cobra.Command, args []string) {
+            internal.NewFiber() // new fiber app
+            internal.Serv()     // start server
+        },
+    }
+    ```
+
+- internal/fiber.go
+    ```go
+    func Serv() {
+        route.New(app) // Uncomment
+        l := fmt.Sprintf("%s:%s", viper.GetString("app.listen"), viper.GetString("app.port"))
+        log.Info().Str("Listener", l).Msg("API server started")
+        AppFiber.Listen(l)
+    }
+    ```
 
 ### 
 
