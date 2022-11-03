@@ -85,6 +85,7 @@ mkdir -p internal/controller \
 && curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/internal/controller/pingController.go -o internal/controller/pingController.go \
 && curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/internal/middleware/middleware.go -o internal/middleware/middleware.go \
 && curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/internal/route/route.go -o internal/route/route.go \
+&& curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/Dockerfile \
 && cobra-cli add serv \
 && task mod
 ```
