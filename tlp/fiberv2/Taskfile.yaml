@@ -1,0 +1,100 @@
+# https://taskfile.dev
+
+version: "3"
+
+vars:
+  APP_NAME: my-taskfile
+  APP_VERSION: 1.0.0
+  APP_BUILD:
+    sh: git log -n 1 --format=%H || echo "nogit"
+  APP_TS:
+    sh: git log -n 1 --format=%aI || echo "0000-00-00T00:00:00+07:00"
+  GO_LDFLAGS: |
+    --ldflags=" \
+    -X '{{.GO_MODULE}}/internal.Version={{.APP_VERSION}}' \
+    -X '{{.GO_MODULE}}/internal.AppName={{.APP_NAME}}' \
+    -X '{{.GO_MODULE}}/internal.Build={{.APP_BUILD}}' \
+    -X '{{.GO_MODULE}}/internal.Timestamp={{.APP_TS}}' \
+    " \
+  GO_MODULE:
+    sh: go list -m  || echo ""
+  DOCKER_REGISTRY_URL: registry.{{.GO_MODULE}}
+
+tasks:
+  default:
+    cmds:
+      - echo "GO Version - {{.GO_VERSION}}"
+      - echo "GO Module  - {{.GO_MODULE}}"
+      - echo "OS         - {{OS}}"
+      - echo "----------"
+      - test -z {{.GO_MODULE}} || task --list-all
+      - |
+        test -n {{.GO_MODULE}} ||
+        echo "Please init project run:"; \
+        echo "task goinit"
+    silent: true
+
+  dev:
+    cmds:
+      - go run {{.LDFLAGS}} {{.GO_MAINFILE}} serv {{.CLI_ARGS}}
+  ver: # increment version
+    cmds:
+      - gosc upver Taskfile.yaml
+  mod:
+    cmds:
+      # - go mod download
+      - go mod tidy
+      - go mod vendor
+      - go mod verify
+
+  build:
+    cmds:
+      - |
+        CGO_ENABLED=0 GOOS=linux go build \
+        -a -installsuffix cgo {{.LDFLAGS}} \
+        -o ./build/{{.BINARY}} mail.go
+  docker-build:
+    cmds:
+      - task: build
+      - |
+        docker build \
+        --build-arg APPNAME={{.APP_NAME}} \
+        --build-arg GOVERSION={{.GO_VERSION}} \
+        -t {{.DOCKER_REGISTRY_URL}}:latest .
+  docker-push:
+    cmds:
+      - docker push {{.DOCKER_REGISTRY_URL}}:latest
+
+  # htpasswd:
+  #   cmds:
+  #     - openssl passwd -apr1 {{.CLI_ARGS}}
+
+  goinit:
+    cmds:
+      - task: tools
+      - git init
+      - |
+        echo "Example GO Module: github.com/your-name/project-name" \
+        && read -p 'Input Go Module: ' gopack \
+        && go mod init ${gopack}
+      - cobra-cli init --viper
+      - task: mod
+
+  tools:
+    cmds:
+      - go install github.com/attapon-th/cobra-cli@latest
+      - go install github.com/itchyny/gojq/cmd/gojq@latest
+      - go install github.com/swaggo/swag/cmd/swag@latest
+      - go install github.com/attapon-th/go-tools/gosc@latest
+
+  # -- Swagger 2.0 -- #
+  # swag:
+  #   cmds:
+  #     - echo "reference https://github.com/swaggo/swag"
+  #     - swag fmt
+  #     - swag init --ot 'json' --output ./storage/swagger -g _main-dev.go
+
+  # swag-prd:
+  #   cmds:
+  #     - swag fmt
+  #     - swag init --ot 'json' --output ./storage/swagger -g _main-prd.go
