@@ -1,23 +1,33 @@
 // Package route api service
 package route
 
-// // New api router
-// func New(app fiber.Router) {
-// 	pathPrefix := viper.GetString("app.prefix")
+import (
+	"github.com/attapon-th/go-project-template/tpl/fiberv2/internal/controller"
+	"github.com/gofiber/fiber/v2"
+	"github.com/spf13/viper"
+)
 
-// 	// Setup Middleware
-// 	rt := app.Use(pathPrefix, middleware.CORS(), middleware.LogAccess())
+// New api router
+func New(r fiber.Router) {
+	pathPrefix := viper.GetString("app.prefix")
 
-// 	// Create Group route
-// 	rg := rt.Group(pathPrefix)
-// 	routePublic(rg)
+	// Setup Middleware
+	// r := app.Use(pathPrefix, middleware.CORS(), middleware.LogAccess())
 
-// 	// routePrivate(rt)
-// }
+	// Create Group route
+	routePublic(r.Group(pathPrefix + "/public"))
 
-// func routePublic(rt fiber.Router) {
-// }
+	routePrivate(r.Group(pathPrefix))
+}
 
-// func routePrivate(rt fiber.Router) {
+func routePublic(rt fiber.Router) {
+	//  app public route handler
+	// import controller public
+	controller.EndpointPing(rt)
+}
 
-// }
+func routePrivate(rt fiber.Router) {
+	// app private route handler
+	// import controller private
+
+}

@@ -4,7 +4,7 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 */
 package main
 
-import "fiberv2/cmd"
+import "github.com/attapon-th/go-project-template/tpl/fiberv2/cmd"
 
 func main() {
 	cmd.Execute()

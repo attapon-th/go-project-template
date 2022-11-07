@@ -1,4 +1,4 @@
-package internal
+package setup
 
 import (
 	"fmt"
@@ -11,29 +11,8 @@ import (
 	"github.com/spf13/viper"
 )
 
-var (
-
-	// AppFiber fiber app
-	AppFiber *fiber.App
-
-	// Version of builds
-	Version string
-
-	// Build hashing
-	Build string
-
-	// Timestamp of build
-	Timestamp string
-
-	// InitLoader func start loader manual add
-	InitLoader []func()
-)
-
-// NewFiber fiber server initailize
-func NewFiber() {
-	for _, fn := range InitLoader {
-		fn()
-	}
+// NewFiberConfig fiber server initailize
+func NewFiberConfig() fiber.Config {
 	config := fiber.Config{
 		AppName:       "fiber-api",
 		Prefork:       false,
@@ -53,16 +32,14 @@ func NewFiber() {
 	} else {
 		config.Prefork = false
 	}
-	AppFiber = fiber.New(config)
+	return config
 }
 
-// Serv start server api
-// *** Uncomment // route.New(app) **
-func Serv() {
-	// route.New(app)
+// Listen start server api
+func Listen(app *fiber.App) error {
 	l := fmt.Sprintf("%s:%s", viper.GetString("app.listen"), viper.GetString("app.port"))
 	log.Info().Str("Listener", l).Msg("API server started")
-	AppFiber.Listen(l)
+	return app.Listen(l)
 }
 
 func errorHandlerResponseJSON(ctx *fiber.Ctx, err error) error {

@@ -4,6 +4,11 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"github.com/attapon-th/go-pkgs/zlog/log"
+	"github.com/attapon-th/go-project-template/tpl/fiberv2/internal"
+	"github.com/attapon-th/go-project-template/tpl/fiberv2/internal/route"
+	"github.com/attapon-th/go-project-template/tpl/fiberv2/internal/setup"
+	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/cobra"
 )
 
@@ -18,7 +23,10 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-
+		app := fiber.New(setup.NewFiberConfig())
+		route.New(app)
+		log.Info().Str("Version", internal.Version).Str("Build", internal.Build).Str("Timestamp", internal.Timestamp).Send()
+		setup.Listen(app)
 	},
 }
 
