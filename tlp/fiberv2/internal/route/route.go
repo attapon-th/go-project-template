@@ -2,7 +2,6 @@
 package route
 
 import (
-	"github.com/attapon-th/go-project-template/tpl/fiberv2/internal/controller"
 	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/viper"
 )
@@ -23,7 +22,7 @@ func New(r fiber.Router) {
 func routePublic(rt fiber.Router) {
 	//  app public route handler
 	// import controller public
-	controller.EndpointPing(rt)
+	// controller.EndpointPing(rt)
 }
 
 func routePrivate(rt fiber.Router) {

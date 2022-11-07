@@ -27,12 +27,12 @@ tasks:
   fiberv2:
     cmds:
       - mkdir -p pkg internal/controller  internal/middleware internal/model internal/route internal/setup
-      - curl -SL "${FIBERV2_URL}/.config.yaml" -o .config.yaml
-      - curl -SL "${FIBERV2_URL}/internal/setup/fiber.go" -o internal/setup/fiber.go
-      - curl -SL "${FIBERV2_URL}/internal/controller/pingController.go" -o internal/controller/pingController.go
-      - curl -SL "${FIBERV2_URL}/internal/middleware/middleware.go" -o internal/middleware/middleware.go
-      - curl -SL "${FIBERV2_URL}/internal/route/route.go" -o internal/route/route.go
-      - curl -SL "${FIBERV2_URL}/Dockerfile" -o ./Dockerfile
+      - curl -SL "{{.FIBERV2_URL}}/.config.yaml" -o .config.yaml
+      - curl -SL "{{.FIBERV2_URL}}/internal/setup/fiber.go" -o internal/setup/fiber.go
+      - curl -SL "{{.FIBERV2_URL}}/internal/controller/pingController.go" -o internal/controller/pingController.go
+      - curl -SL "{{.FIBERV2_URL}}/internal/middleware/middleware.go" -o internal/middleware/middleware.go
+      - curl -SL "{{.FIBERV2_URL}}/internal/route/route.go" -o internal/route/route.go
+      - curl -SL "{{.FIBERV2_URL}}/Dockerfile" -o ./Dockerfile
       - cobra-cli add serv
       - task mod
       - rm -f Taskfile_Init.yaml
