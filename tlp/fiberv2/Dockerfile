@@ -6,7 +6,7 @@ RUN apk -U --no-cache add dumb-init tzdata ca-certificates && update-ca-certific
 
 WORKDIR /app
 
-ADD ./build/maapi /bin/main
+ADD ./build/${APPNAME} /bin/main
 
 
 # Set TimeZone

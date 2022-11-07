@@ -67,7 +67,7 @@ echo "/vendor" >> .gitignore
 >
 
 ```shell
-curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/Taskfile.yaml -o Taskfile.yaml \
+curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/Taskfile.yaml -o Taskfile.yaml \
 && task goinit \
 && cobra-cli init --viper \
 && echo "/vendor" >> .gitignore
@@ -79,13 +79,15 @@ mkdir -p internal/controller \
 && mkdir -p internal/middleware \
 && mkdir -p internal/model \
 && mkdir -p internal/route \
+&& mkdir -p internal/setup \
 && mkdir -p pkg \
-&& curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/.config.yaml -o .config.yaml \
-&& curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/internal/fiber.go -o internal/fiber.go \
-&& curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/internal/controller/pingController.go -o internal/controller/pingController.go \
-&& curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/internal/middleware/middleware.go -o internal/middleware/middleware.go \
-&& curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/internal/route/route.go -o internal/route/route.go \
-&& curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/Dockerfile \
+&& FIBERV2_URL="https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2"
+&& curl -SL "$FIBERV2_URL/.config.yaml" -o .config.yaml \
+&& curl -SL "$FIBERV2_URL/internal/setup/fiber.go" -o internal/setup/fiber.go \
+&& curl -SL "$FIBERV2_URL/internal/controller/pingController.go" -o internal/controller/pingController.go \
+&& curl -SL"$FIBERV2_URL/internal/middleware/middleware.go" -o internal/middleware/middleware.go \
+&& curl -SL "$FIBERV2_URL/internal/route/route.go" -o internal/route/route.go \
+&& curl -SL "$FIBERV2_URL/Dockerfile" -o ./Dockerfile \
 && cobra-cli add serv \
 && task mod
 ```
@@ -101,32 +103,18 @@ curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/t
 
 ### Edit file
 
-- `cmd/serv.go`
+- `cmd/serv.go` set variable `Run`
     ```go
     // servCmd represents the serv command
     var servCmd = &cobra.Command{
-        Use:   "serv",
-        Short: "A brief description of your command",
-        Long: `A longer description that spans multiple lines and likely contains examples
-    and usage of using your command. For example:
-
-    Cobra is a CLI library for Go that empowers applications.
-    This application is a tool to generate the needed files
-    to quickly create a Cobra application.`,
+        ...
+        ...
         Run: func(cmd *cobra.Command, args []string) {
-            internal.NewFiber() // new fiber app
-            internal.Serv()     // start server
+            app := fiber.New(setup.NewFiberConfig())
+            route.New(app)
+            log.Info().Str("Version", internal.Version).Str("Build", internal.Build).Str("Timestamp", internal.Timestamp).Send()
+            setup.Listen(app)
         },
-    }
-    ```
-
-- internal/fiber.go
-    ```go
-    func Serv() {
-        route.New(app) // Uncomment
-        l := fmt.Sprintf("%s:%s", viper.GetString("app.listen"), viper.GetString("app.port"))
-        log.Info().Str("Listener", l).Msg("API server started")
-        AppFiber.Listen(l)
     }
     ```
 
