@@ -32,11 +32,6 @@ tasks:
       - echo "GO Module  - {{.GO_MODULE}}"
       - echo "OS         - {{OS}}"
       - echo "----------"
-      - test -z {{.GO_MODULE}} || task --list-all
-      - |
-        test -n {{.GO_MODULE}} ||
-        echo "Please init project run:"; \
-        echo "task goinit"
     silent: true
 
   dev:
@@ -54,14 +49,17 @@ tasks:
 
   build:
     cmds:
+      - gosc upver Taskfile.yaml
       - |
         CGO_ENABLED=0 GOOS=linux go build \
         -a -installsuffix cgo {{.GO_LDFLAGS}} \
         -o ./build/{{.APP_NAME}} main.go
+
   docker-build:
     cmds:
-      - task: build
-      - docker build --build-arg APPNAME={{.APP_NAME}} -t {{.DOCKER_REGISTRY_URL}}:latest .
+      - test -f ./build/{{.APP_NAME}} || task build
+      - docker build --build-arg APPNAME={{.APP_NAME}}  -t {{.DOCKER_REGISTRY_URL}}:latest .
+
   docker-push:
     cmds:
       - docker push {{.DOCKER_REGISTRY_URL}}:latest
