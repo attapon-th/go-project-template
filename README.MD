@@ -68,28 +68,14 @@ echo "/vendor" >> .gitignore
 
 ```shell
 curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/Taskfile.yaml -o Taskfile.yaml \
-&& task goinit \
+curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/Taskfile_Init.yaml -o Taskfile_Init.yaml \
+&& task init:goinit \
 && cobra-cli init --viper \
 && echo "/vendor" >> .gitignore
 ```
-> Create fiber
-
+## Create Project Fiber v2
 ```shell
-mkdir -p internal/controller \
-&& mkdir -p internal/middleware \
-&& mkdir -p internal/model \
-&& mkdir -p internal/route \
-&& mkdir -p internal/setup \
-&& mkdir -p pkg \
-&& FIBERV2_URL="https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2"
-&& curl -SL "$FIBERV2_URL/.config.yaml" -o .config.yaml \
-&& curl -SL "$FIBERV2_URL/internal/setup/fiber.go" -o internal/setup/fiber.go \
-&& curl -SL "$FIBERV2_URL/internal/controller/pingController.go" -o internal/controller/pingController.go \
-&& curl -SL"$FIBERV2_URL/internal/middleware/middleware.go" -o internal/middleware/middleware.go \
-&& curl -SL "$FIBERV2_URL/internal/route/route.go" -o internal/route/route.go \
-&& curl -SL "$FIBERV2_URL/Dockerfile" -o ./Dockerfile \
-&& cobra-cli add serv \
-&& task mod
+task init:fiberv2
 ```
 
 > Optional: Get swagger if your use `https://github.com/swaggo/swag`
