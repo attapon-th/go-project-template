@@ -67,7 +67,7 @@ echo "/vendor" >> .gitignore
 >
 
 ```shell
-curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/Taskfile_Init.yaml -o Taskfile_Init.yaml 
+curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2/Taskfile_Init.yaml -o Taskfile_Init.yaml \
 && task -t Taskfile_Init.yaml init
 ```
 ## Create Project Fiber v2

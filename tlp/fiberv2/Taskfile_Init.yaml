@@ -6,7 +6,7 @@ vars:
   FIBERV2_URL: https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2
 
 tasks:
-  goinit:
+  init:
     cmds:
       - task: tools
       - git init
@@ -17,7 +17,6 @@ tasks:
         && read -p 'Input Go Module: ' gopack \
         && go mod init ${gopack}
       - cobra-cli init --viper
-      - cobra-cli add serv
       - task mod
 
   tools:
@@ -27,7 +26,7 @@ tasks:
       - go install github.com/swaggo/swag/cmd/swag@latest
       - go install github.com/attapon-th/go-tools/gosc@latest
 
-  fiberv2:
+  init-fiberv2:
     cmds:
       - mkdir -p pkg internal/controller  internal/middleware internal/model internal/route internal/setup
       - curl -SL "{{.FIBERV2_URL}}/.config.yaml" -o .config.yaml
