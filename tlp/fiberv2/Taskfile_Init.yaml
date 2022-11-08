@@ -11,7 +11,7 @@ tasks:
       - task: tools
       - git init
       - curl -SL "{{.FIBERV2_URL}}/.gitignore" -o .gitignore
-      - curl -SL "{{.FIBERV2_URL}}/.Taskfile.yaml" -o .Taskfile.yaml
+      - curl -SL "{{.FIBERV2_URL}}/Taskfile.yaml" -o Taskfile.yaml
       - |
         echo "Example GO Module: github.com/your-name/project-name" \
         && read -p 'Input Go Module: ' gopack \
@@ -21,15 +21,16 @@ tasks:
 
   tools:
     cmds:
-      - go install github.com/spf13/cobra-cli@latest
-      - go install github.com/itchyny/gojq/cmd/gojq@latest
-      - go install github.com/swaggo/swag/cmd/swag@latest
-      - go install github.com/attapon-th/go-tools/gosc@latest
+      - command -v cobra-cli || go install github.com/spf13/cobra-cli@latest
+      - command -v gojq || go install github.com/itchyny/gojq/cmd/gojq@latest
+      - command -v swag || go install github.com/swaggo/swag/cmd/swag@latest
+      - command -v gosc || go install github.com/attapon-th/go-tools/gosc@latest
 
   init-fiberv2:
     cmds:
       - mkdir -p pkg internal/controller  internal/middleware internal/model internal/route internal/setup
       - curl -SL "{{.FIBERV2_URL}}/.config.yaml" -o .config.yaml
+      - curl -SL "{{.FIBERV2_URL}}/internal/version.go" -o internal/version.go
       - curl -SL "{{.FIBERV2_URL}}/internal/setup/fiber.go" -o internal/setup/fiber.go
       - curl -SL "{{.FIBERV2_URL}}/internal/controller/pingController.go" -o internal/controller/pingController.go
       - curl -SL "{{.FIBERV2_URL}}/internal/middleware/middleware.go" -o internal/middleware/middleware.go
@@ -37,4 +38,3 @@ tasks:
       - curl -SL "{{.FIBERV2_URL}}/Dockerfile" -o ./Dockerfile
       - cobra-cli add serv
       - task mod
-      - rm -f Taskfile_Init.yaml

@@ -13,8 +13,8 @@ vars:
     sh: go list -m  || echo ""
   GO_LDFLAGS: |
     --ldflags=" \
-    -X '{{.GO_MODULE}}/internal.Version={{.APP_VERSION}}' \
     -X '{{.GO_MODULE}}/internal.AppName={{.APP_NAME}}' \
+    -X '{{.GO_MODULE}}/internal.Version={{.APP_VERSION}}' \
     -X '{{.GO_MODULE}}/internal.Build={{.APP_BUILD}}' \
     -X '{{.GO_MODULE}}/internal.Timestamp={{.APP_TS}}'" \
   DOCKER_REGISTRY_URL: registry.{{.GO_MODULE}}
