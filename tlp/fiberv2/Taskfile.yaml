@@ -2,19 +2,13 @@
 
 version: "3"
 
-includes:
-  init:
-    taskfile: "./Taskfile_Init.yaml"
-    optional: true
-
 vars:
   APP_NAME: myapp
   APP_VERSION: 1.0.0
   APP_BUILD:
     sh: git log -n 1 --format=%h || echo "nogit"
   APP_TS:
-    sh: git log -n 1 --format=%aI || echo "0000-00-00T00:00:00+07:00"
-
+    sh: git log -n 1 --format=%cI || echo "0000-00-00T00:00:00+07:00"
   GO_MODULE:
     sh: go list -m  || echo ""
   GO_LDFLAGS: |
@@ -28,15 +22,17 @@ vars:
 tasks:
   default:
     cmds:
-      - echo "GO Version - {{.GO_VERSION}}"
-      - echo "GO Module  - {{.GO_MODULE}}"
+      - echo "GO Version - {{.APP_NAME}}"
+      - echo "GO Version - {{.APP_VERSION}}"
+      - echo "GO Module  - {{.APP_BUILD}}"
       - echo "OS         - {{OS}}"
       - echo "----------"
+      - task --list-all
     silent: true
 
   dev:
     cmds:
-      - go run {{.GO_LDFLAGS}} main.go serv {{.CLI_ARGS}}
+      - go run {{.GO_LDFLAGS}} main.go serv --config .config.yaml {{.CLI_ARGS}}
   ver: # increment version
     cmds:
       - gosc upver Taskfile.yaml
@@ -49,7 +45,6 @@ tasks:
 
   build:
     cmds:
-      - gosc upver Taskfile.yaml
       - |
         CGO_ENABLED=0 GOOS=linux go build \
         -a -installsuffix cgo {{.GO_LDFLAGS}} \

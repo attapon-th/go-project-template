@@ -10,16 +10,19 @@ tasks:
     cmds:
       - task: tools
       - git init
+      - curl -SL "{{.FIBERV2_URL}}/.gitignore" -o .gitignore
+      - curl -SL "{{.FIBERV2_URL}}/.Taskfile.yaml" -o .Taskfile.yaml
       - |
         echo "Example GO Module: github.com/your-name/project-name" \
         && read -p 'Input Go Module: ' gopack \
         && go mod init ${gopack}
       - cobra-cli init --viper
+      - cobra-cli add serv
       - task mod
 
   tools:
     cmds:
-      - go install github.com/attapon-th/cobra-cli@latest
+      - go install github.com/spf13/cobra-cli@latest
       - go install github.com/itchyny/gojq/cmd/gojq@latest
       - go install github.com/swaggo/swag/cmd/swag@latest
       - go install github.com/attapon-th/go-tools/gosc@latest
