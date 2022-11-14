@@ -19,10 +19,10 @@ func New(app fiber.Router) {
 	r := app.Use(pathPrefix, middleware.CORS(), middleware.LogAccess())
 
 	// Create Group route Public
-	routePublic(r.Group(pathPrefix + "/pb"))
+	routePublic(r.Group(pathPrefix + "/public"))
 
 	// Create Group route Private
-	routePrivate(r.Group(pathPrefix+"/pv", middleware.BasicAuth()))
+	routePrivate(r.Group(pathPrefix+"/private", middleware.BasicAuth()))
 }
 
 func routePublic(rt fiber.Router) {
