@@ -5,9 +5,9 @@ package cmd
 
 import (
 	"github.com/attapon-th/go-pkgs/zlog/log"
+	"github.com/attapon-th/go-project-template/tpl/fiberv2/app/route"
 	"github.com/attapon-th/go-project-template/tpl/fiberv2/internal"
-	"github.com/attapon-th/go-project-template/tpl/fiberv2/internal/route"
-	"github.com/attapon-th/go-project-template/tpl/fiberv2/internal/setup"
+	"github.com/attapon-th/go-project-template/tpl/fiberv2/internal/config"
 	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/cobra"
 )
@@ -15,18 +15,16 @@ import (
 // servCmd represents the serv command
 var servCmd = &cobra.Command{
 	Use:   "serv",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "start server api listener",
+	Long:  `start server api listener using the configuration.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		app := fiber.New(setup.NewFiberConfig())
-		route.New(app)
+		app := fiber.New(config.NewFiberConfig())
+
+		route.New(app) // route and middleware api
+
 		log.Info().Str("Version", internal.Version).Str("Build", internal.Build).Str("Timestamp", internal.Timestamp).Send()
-		setup.Listen(app)
+		l := config.ListenString()
+		app.Listen(l)
 	},
 }
 

@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/attapon-th/go-project-template/tpl/fiberv2/internal"
+	"github.com/attapon-th/go-project-template/tpl/fiberv2/internal/config"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -15,17 +17,12 @@ var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "fiberv2",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
+	Use:   "myapp",
+	Short: "my application",
+	Long: `
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -39,10 +36,6 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.fiberv2.yaml)")
 
@@ -62,12 +55,15 @@ func initConfig() {
 		cobra.CheckErr(err)
 
 		// Search config in home directory with name ".fiberv2" (without extension).
-		viper.AddConfigPath(home)
+		viper.AddConfigPath(home) // home directory
+		viper.AddConfigPath("/")  // root path
+		viper.AddConfigPath("./") // current working directory
 		viper.SetConfigType("yaml")
-		viper.SetConfigName(".fiberv2")
+		viper.SetConfigName("." + internal.AppName)
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
+	config.SetDefualtConfigs()
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {

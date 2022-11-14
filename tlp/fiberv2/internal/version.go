@@ -4,7 +4,7 @@ package internal
 var (
 
 	// AppName name of the application
-	AppName string
+	AppName = "appname"
 
 	// Version of builds
 	Version string
