@@ -26,15 +26,15 @@ tasks:
       - command -v swag || go install github.com/swaggo/swag/cmd/swag@latest
       - command -v gosc || go install github.com/attapon-th/go-tools/gosc@latest
 
+  freeze:
+    - git ls-files | grep -e "\.go" > fiber-files.txt
+
   init-fiberv2:
     cmds:
-      - mkdir -p pkg internal/controller  internal/middleware internal/model internal/route internal/setup
-      - curl -SL "{{.FIBERV2_URL}}/.config.yaml" -o .config.yaml
-      - curl -SL "{{.FIBERV2_URL}}/internal/version.go" -o internal/version.go
-      - curl -SL "{{.FIBERV2_URL}}/internal/setup/fiber.go" -o internal/setup/fiber.go
-      - curl -SL "{{.FIBERV2_URL}}/internal/controller/pingController.go" -o internal/controller/pingController.go
-      - curl -SL "{{.FIBERV2_URL}}/internal/middleware/middleware.go" -o internal/middleware/middleware.go
-      - curl -SL "{{.FIBERV2_URL}}/internal/route/route.go" -o internal/route/route.go
-      - curl -SL "{{.FIBERV2_URL}}/Dockerfile" -o ./Dockerfile
-      - cobra-cli add serv
+      - |
+        cat fiber-files.txt | while read line 
+        do
+          mkdir -p $(dirname "$line")
+          curl -SL "{{.FIBERV2_URL}}/$line" > $line
+        done
       - task mod

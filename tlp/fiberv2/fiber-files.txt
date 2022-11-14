@@ -1,0 +1,12 @@
+app/controller/initCtl.go
+app/controller/pingCtl.go
+app/controller/privateCtl.go
+app/middleware/middleware.go
+app/model/model.go
+app/route/route.go
+cmd/root.go
+cmd/serv.go
+internal/config/config.go
+internal/config/fiber.go
+internal/version.go
+main.go
