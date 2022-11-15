@@ -12,5 +12,4 @@ internal/version.go
 main.go
 .config.yaml
 Taskfile.yaml
-Taskfile_Init.yaml
 Dockerfile
