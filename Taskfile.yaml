@@ -1,0 +1,36 @@
+# https://taskfile.dev
+
+version: "3"
+
+vars:
+  ROOT_URL: https://raw.githubusercontent.com/attapon-th/go-project-template
+  FIBERV2_URL: https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2
+
+tasks:
+  init:
+    cmds:
+      - task: tools
+      - git init
+      - |
+        echo "Example GO Module: github.com/your-name/project-name" \
+        && read -p 'Input Go Module: ' gopack \
+        && go mod init ${gopack}
+      - cobra-cli init --viper
+      - task mod
+
+  tools:
+    cmds:
+      - command -v cobra-cli || go install github.com/spf13/cobra-cli@latest
+      - command -v gojq || go install github.com/itchyny/gojq/cmd/gojq@latest
+      - command -v gosc || go install github.com/attapon-th/go-tools/gosc@latest
+
+  init-fiberv2:
+    cmds:
+      - curl -SL "{{.FIBERV2_URL}}/.gitignore" -o .gitignore
+      - |
+        cat fiber-files.txt | while read line 
+        do
+          mkdir -p $(dirname "$line")
+          curl -SL "{{.FIBERV2_URL}}/$line" > $line
+        done
+      - task mod
