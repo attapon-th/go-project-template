@@ -15,8 +15,7 @@ tasks:
         echo "Example GO Module: github.com/your-name/project-name" \
         && read -p 'Input Go Module: ' gopack \
         && go mod init ${gopack}
-      - cobra-cli init --viper
-      - task mod
+      - task: tools
 
   tools:
     cmds:
@@ -24,11 +23,11 @@ tasks:
       - command -v gojq || go install github.com/itchyny/gojq/cmd/gojq@latest
       - command -v gosc || go install github.com/attapon-th/go-tools/gosc@latest
 
-  init-fiberv2:
+  init-fiber:
     cmds:
       - curl -SL "{{.FIBERV2_URL}}/.gitignore" -o .gitignore
       - |
-        cat fiber-files.txt | while read line 
+        curl {{.FIBERV2_URL}}/fiber-files.txt  | while read line 
         do
           mkdir -p $(dirname "$line")
           curl -SL "{{.FIBERV2_URL}}/$line" > $line
