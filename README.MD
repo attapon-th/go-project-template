@@ -9,13 +9,8 @@ go install github.com/go-task/task/v3/cmd/task@latest
 ## Use get [Taskfile.yaml](https://raw.githubusercontent.com/attapon-th/go-project-template/main/Taskfile.yaml) into root directory project
 
 ```shell
-curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/Taskfile.yaml -o Taskfile.yaml
-
-task goinit 
-
-cobra-cli init --viper
-
-echo "/vendor" >> .gitignore
+curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/Taskfile.yaml -o Taskfile.yaml \
+&& task goinit 
 ```
 
 ## List Packages
