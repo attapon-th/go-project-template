@@ -5,7 +5,8 @@ version: "3"
 vars:
   ROOT_URL: https://raw.githubusercontent.com/attapon-th/go-project-template
   FIBERV2_URL: https://raw.githubusercontent.com/attapon-th/go-project-template/main/tlp/fiberv2
-
+  GO_MODULE:
+    sh: go list -m  || echo ""
 tasks:
   init:
     cmds:
@@ -30,6 +31,6 @@ tasks:
         curl {{.FIBERV2_URL}}/fiber-files.txt  | while read line 
         do
           mkdir -p $(dirname "$line")
-          curl -SL "{{.FIBERV2_URL}}/$line" > $line
+          curl "{{.FIBERV2_URL}}/$line" | gosc replace "github.com/attapon-th/go-project-template/tpl/fiberv2" "{{.GO_MODULE}}" > $line
         done
-      - task mod
+      - go mod tidy
