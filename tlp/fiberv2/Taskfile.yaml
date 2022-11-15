@@ -59,18 +59,18 @@ tasks:
     cmds:
       - docker push {{.DOCKER_REGISTRY_URL}}:latest
 
-  # htpasswd:
-  #   cmds:
-  #     - openssl passwd -apr1 {{.CLI_ARGS}}
+    # htpasswd:
+    #   cmds:
+    #     - openssl passwd -apr1 {{.CLI_ARGS}}
 
-  # -- Swagger 2.0 -- #
-  # swag:
-  #   cmds:
-  #     - echo "reference https://github.com/swaggo/swag"
-  #     - swag fmt
-  #     - swag init --ot 'json' --output ./storage/swagger -g _main-dev.go
+    # -- Swagger 2.0 -- #
+    # swag:
+    #   cmds:
+    #     - echo "reference https://github.com/swaggo/swag"
+    #     - swag fmt
+    #     - swag init --ot 'json' --output ./storage/swagger -g _main-dev.go
 
-  # swag-prd:
-  #   cmds:
-  #     - swag fmt
-  #     - swag init --ot 'json' --output ./storage/swagger -g _main-prd.go
+    # swag-prd:
+    #   cmds:
+    #     - swag fmt
+    #     - swag init --ot 'json' --output ./storage/swagger -g _main-prd.go
