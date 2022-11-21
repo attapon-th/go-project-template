@@ -10,7 +10,7 @@ go install github.com/go-task/task/v3/cmd/task@latest
 
 ```shell
 curl -SL https://raw.githubusercontent.com/attapon-th/go-project-template/main/Taskfile.yaml -o Taskfile.yaml \
-&& task goinit 
+&& task init 
 ```
 
 ## List Packages
