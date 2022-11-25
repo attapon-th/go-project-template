@@ -5,9 +5,9 @@ package cmd
 
 import (
 	"github.com/attapon-th/go-pkgs/zlog/log"
-	"github.com/attapon-th/go-project-template/tpl/fiberv2/app/route"
 	"github.com/attapon-th/go-project-template/tpl/fiberv2/internal"
 	"github.com/attapon-th/go-project-template/tpl/fiberv2/internal/config"
+	"github.com/attapon-th/go-project-template/tpl/fiberv2/internal/route"
 	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/cobra"
 )
@@ -20,7 +20,7 @@ var servCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		app := fiber.New(config.NewFiberConfig())
 
-		route.New(app) // route and middleware api
+		route.Init(app) // Init route, middleware and controller
 
 		log.Info().Str("Version", internal.Version).Str("Build", internal.Build).Str("Timestamp", internal.Timestamp).Send()
 		l := config.ListenString()

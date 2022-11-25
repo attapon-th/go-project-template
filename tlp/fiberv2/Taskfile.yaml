@@ -3,7 +3,7 @@
 version: "3"
 
 vars:
-  APP_NAME: myapp
+  APP_NAME: myapi
   APP_VERSION: 1.0.0
   APP_BUILD:
     sh: git log -n 1 --format=%h || echo "nogit"

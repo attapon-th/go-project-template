@@ -5,6 +5,7 @@ import (
 	"runtime"
 
 	"github.com/attapon-th/go-pkgs/zlog/log"
+	"github.com/attapon-th/go-project-template/tpl/fiberv2/internal/model"
 
 	json "github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2"
@@ -51,9 +52,7 @@ func errorHandlerResponseJSON(ctx *fiber.Ctx, err error) error {
 	if err != nil {
 		msgError = err.Error()
 	}
-	resError := fiber.Map{
-		"msg": msgError,
-		"ok":  false,
-	}
+	resError := model.BaseResponse{}
+	resError.Set(false, msgError)
 	return ctx.Status(code).JSON(resError)
 }

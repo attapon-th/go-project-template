@@ -2,16 +2,18 @@
 package route
 
 import (
-	"github.com/attapon-th/go-project-template/tpl/fiberv2/app/controller"
-	"github.com/attapon-th/go-project-template/tpl/fiberv2/app/middleware"
+	"github.com/attapon-th/go-project-template/tpl/fiberv2/internal/controller"
+	"github.com/attapon-th/go-project-template/tpl/fiberv2/internal/controller/privatectl"
+	"github.com/attapon-th/go-project-template/tpl/fiberv2/internal/controller/publicctl"
+	"github.com/attapon-th/go-project-template/tpl/fiberv2/internal/middleware"
 	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/viper"
 )
 
-// New api router
-func New(app fiber.Router) {
+// Init api router
+func Init(app fiber.Router) {
 	// initailize controller
-	controller.New()
+	controller.Init()
 
 	pathPrefix := viper.GetString("app.prefix")
 
@@ -27,11 +29,11 @@ func New(app fiber.Router) {
 
 func routePublic(rt fiber.Router) {
 	//  app public route handler
-	controller.EndpointPing(rt)
+	publicctl.EndpointPing(rt)
 }
 
 func routePrivate(rt fiber.Router) {
 	// app private route handler
-	controller.EndpointPrivatePing(rt)
+	privatectl.EndpointPing(rt)
 
 }

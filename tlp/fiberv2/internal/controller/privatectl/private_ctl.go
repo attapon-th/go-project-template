@@ -1,14 +1,10 @@
-// Package controller api controller
-package controller
+// Package privatectl private endpoint
+package privatectl
 
 import (
+	"github.com/attapon-th/go-project-template/tpl/fiberv2/internal/model"
 	"github.com/gofiber/fiber/v2"
 )
-
-type pingResponse struct {
-	OK  bool
-	Msg string
-}
 
 // EndpointPing ping endpoint
 //
@@ -23,8 +19,7 @@ func EndpointPing(r fiber.Router) {
 }
 
 func getPing(c *fiber.Ctx) error {
-	return c.JSON(pingResponse{
-		OK:  true,
-		Msg: "Ping successfully",
-	})
+	res := model.BaseResponse{}
+	res.Set(true, "Ping private endpoint successfully.")
+	return c.JSON(res)
 }

@@ -15,7 +15,7 @@ ENV APPNAME=${APPNAME}
 
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
-CMD ["sh", "-c", "/app/${APPNAME}",  "serv"]
+CMD ["sh", "-c", "/app/${APPNAME} serv"]
 
 EXPOSE 80
 
