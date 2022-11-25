@@ -18,5 +18,3 @@ ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD ["sh", "-c", "/app/${APPNAME} serv"]
 
 EXPOSE 80
-
-
