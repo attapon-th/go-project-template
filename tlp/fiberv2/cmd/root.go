@@ -19,7 +19,7 @@ var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "myapp",
+	Use:   internal.AppName,
 	Short: "my application",
 	Long: `
 Cobra is a CLI library for Go that empowers applications.

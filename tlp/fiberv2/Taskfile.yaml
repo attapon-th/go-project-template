@@ -12,7 +12,7 @@ vars:
   GO_MODULE:
     sh: go list -m  || echo ""
   GO_LDFLAGS: |
-    --ldflags=" \
+    --ldflags="-s -w \
     -X '{{.GO_MODULE}}/internal.AppName={{.APP_NAME}}' \
     -X '{{.GO_MODULE}}/internal.Version={{.APP_VERSION}}' \
     -X '{{.GO_MODULE}}/internal.Build={{.APP_BUILD}}' \
@@ -47,8 +47,13 @@ tasks:
     cmds:
       - |
         CGO_ENABLED=0 GOOS=linux go build \
-        -a -installsuffix cgo {{.GO_LDFLAGS}} \
+        -a -v {{.GO_LDFLAGS}} \
         -o ./build/{{.APP_NAME}} main.go
+
+      # reduce binary size
+      # required upx (yum install upx)
+      - upx --brute ./build/{{.APP_NAME}}
+      - du -h ./build/*
 
   docker-build:
     cmds:

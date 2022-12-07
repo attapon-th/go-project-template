@@ -1,20 +1,26 @@
+ARG APPNAME="AppFiberV2"
+
 FROM alpine:3.15
 
-ARG APPNAME=appmain
-
-RUN apk -U --no-cache add dumb-init tzdata ca-certificates && update-ca-certificates
+ARG APPNAME
 
 WORKDIR /app
 
-ADD ./build/${APPNAME} /app/${APPNAME}
+RUN apk -U --no-cache add tzdata tini \
+    && chown 1000:1000 -R /app \
+    && rm -rf /root /tmp/* /var/cache/apk/* && mkdir /root
+
+COPY ./build/${APPNAME} /app/${APPNAME}
+
 
 # Set TimeZone
 ENV TZ=Asia/Bangkok
 ENV ENVOLOPMENT=production
-ENV APPNAME=${APPNAME}
+ENV APPNAME="${APPNAME}"
 
+USER "1000:1000"
 
-ENTRYPOINT ["/usr/bin/dumb-init", "--"]
-CMD ["sh", "-c", "/app/${APPNAME} serv"]
+ENTRYPOINT ["tini", "--"]
+CMD /app/$APPNAME serv
 
 EXPOSE 80

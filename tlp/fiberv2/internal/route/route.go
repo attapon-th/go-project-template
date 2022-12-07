@@ -18,7 +18,11 @@ func Init(app fiber.Router) {
 	pathPrefix := viper.GetString("app.prefix")
 
 	// Setup Middleware all route
-	r := app.Use(pathPrefix, middleware.CORS(), middleware.LogAccess())
+	r := app.Use(
+		pathPrefix,
+		// middleware.CORS(),
+		middleware.LogAccess(),
+	)
 
 	// Create Group route Public
 	routePublic(r.Group(pathPrefix + "/public"))
