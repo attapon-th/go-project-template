@@ -13,8 +13,14 @@ func RequestWithFastHTTP(uri string, reqBody []byte, headers *fasthttp.RequestHe
 	req := fasthttp.AcquireRequest()
 	defer fasthttp.ReleaseRequest(req)
 	req.SetRequestURI(uri)
-	headers.CopyTo(&req.Header)
-	req.SetBody(reqBody)
+	if reqBody != nil {
+		req.SetBody(reqBody)
+	}
+	if headers != nil {
+		headers.CopyTo(&req.Header)
+	} else {
+		headers.SetMethod(fasthttp.MethodGet)
+	}
 	// fasthttp does not automatically request a gzipped response.
 	// We must explicitly ask for it.
 	if len(req.Header.Peek("Accept-Encoding")) < 2 {
