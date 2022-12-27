@@ -11,6 +11,7 @@ internal/route/route.go
 internal/version.go
 main.go
 pkg/exec.go
+pkg/fasthttp.go
 pkg/pkg.go
 pkg/struct-tags.go
 .config.yaml
